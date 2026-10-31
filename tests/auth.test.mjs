@@ -80,6 +80,9 @@ test('setup is refused from a non-local address without the setup token', async 
   const c = env.client();
   let r = await c.req('POST', '/api/auth/setup', { orgName: 'X', name: 'A', email: 'a@x.org', password: 'a long enough password' }, { 'x-forwarded-for': '203.0.113.9' });
   assert.equal(r.status, 403);
+  // A visitor can put 127.0.0.1 first; the proxy appends their real address, and only that last entry counts.
+  r = await c.req('POST', '/api/auth/setup', { orgName: 'X', name: 'A', email: 'a@x.org', password: 'a long enough password' }, { 'x-forwarded-for': '127.0.0.1, 203.0.113.9' });
+  assert.equal(r.status, 403, 'a forged loopback address is ignored');
   r = await c.req('POST', '/api/auth/setup', { orgName: 'X', name: 'A', email: 'a@x.org', password: 'a long enough password', setupToken: 's3cret-token' }, { 'x-forwarded-for': '203.0.113.9' });
   assert.equal(r.status, 201);
 });

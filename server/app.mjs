@@ -91,7 +91,8 @@ export function createApp(config, deps = {}) {
   /** @param {import('node:http').IncomingMessage} req @param {import('node:http').ServerResponse} res */
   async function handler(req, res) {
     const url = new URL(req.url || '/', 'http://localhost');
-    const ip = (config.trustProxy ? String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() : '') || req.socket.remoteAddress || '';
+    // Behind a proxy, the last X-Forwarded-For entry is the one the proxy added; earlier entries come from the client and can be forged.
+    const ip = (config.trustProxy ? String(req.headers['x-forwarded-for'] || '').split(',').pop()?.trim() : '') || req.socket.remoteAddress || '';
     try {
       if (url.pathname === '/api/health' && req.method === 'GET') return sendJson(res, 200, { ok: true, data: { status: 'ok', demoOnly: config.demoOnly } });
       if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/oauth/')) {

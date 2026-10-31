@@ -1,28 +1,43 @@
-# Public preview: Tier 0 only. REAL_SOURCES is not set, so real sources stay off and visitors use demo accounts. Render's free disk is wiped on every
-# deploy, so real data mode needs a paid instance with a persistent disk. See docs/SETUP.md.
+# Real accounts: REAL_SOURCES=true turns on email/password sign-in and real sources (Gmail, uploads, databases).
+# The database lives on a persistent disk, which needs a paid instance type; on the free plan every deploy or
+# restart would erase all accounts and data. See docs/SETUP.md.
+#
+# After the first deploy, open https://<your-app>.onrender.com/login.html and create the first supervisor with the
+# SETUP_TOKEN value (Render dashboard -> Environment). For a demo-only site instead, use plan: free, drop the disk,
+# and replace REAL_SOURCES with DEMO_ONLY=true.
 services:
   - type: web
     name: public-records-ai-search-poc
     runtime: node
-    plan: free
+    plan: starter
     buildCommand: npm ci && npm run build
     startCommand: node server.js
     healthCheckPath: /api/health
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1
     envVars:
       - key: NODE_VERSION
         value: 24.22.2
-      - key: DEMO_ONLY
+      - key: NODE_ENV
+        value: production
+      - key: REAL_SOURCES
         value: "true"
-
-# To keep real data on Render, the database must live on a persistent disk (paid instance types only).
-# Uncomment the block below, switch "plan" above to a paid type (for example starter), remove DEMO_ONLY,
-# and set DATA_DIR to the disk's mount path. Without a disk, every deploy or restart erases all data.
-#    disk:
-#      name: data
-#      mountPath: /var/data
-#      sizeGB: 1
-#    # envVars:
-#    #   - key: DATA_DIR
-#    #     value: /var/data
-#    #   - key: PUBLIC_URL
-#    #     value: https://your-app.onrender.com
+      - key: DATA_DIR
+        value: /var/data
+      # Render's proxy sets X-Forwarded-For; needed for per-visitor rate limits and audit IP hashes.
+      - key: TRUST_PROXY
+        value: "true"
+      # https://<your-app>.onrender.com, entered in the dashboard. Must be https:// for Secure cookies.
+      - key: PUBLIC_URL
+        sync: false
+      # Lets the first supervisor be created from a browser (the server is not on localhost).
+      - key: SETUP_TOKEN
+        generateValue: true
+      - key: IP_HASH_SALT
+        generateValue: true
+      # 32 random bytes, base64: node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+      # Keep a copy outside Render: losing it means reconnecting every source.
+      - key: CREDENTIAL_ENCRYPTION_KEY
+        sync: false

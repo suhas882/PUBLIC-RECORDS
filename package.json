@@ -24,6 +24,6 @@
   },
   "description": "Public Records AI Search: staff search across connected sources with Claude-assisted planning, hybrid retrieval and audit logging. Includes the synthetic Round 2 demo.",
   "engines": {
-    "node": ">=22.13"
+    "node": ">=24"
   }
 }

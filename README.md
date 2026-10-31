@@ -2,7 +2,7 @@
 
 **Staff decide. The tool finds, ranks and logs.** A clerk logs a records request; the AI drafts an editable search plan from the request text only; staff confirm and lock it; the tool searches read-only sources, ranks candidates with a reason and a passage, lists every source NOT searched, and produces an exportable search record for the city's existing process. It never decides responsiveness, exemptions, redaction or release.
 
-- Run on your PC: double-click `start.bat` (Node.js 22.13 or newer). Real sources are allowed there.
+- Run on your PC: double-click `start.bat` (Node.js 24 or newer). Real sources are allowed there.
 - Hosted demo: real sources stay off (`REAL_SOURCES` unset). Visitors pick a demo role; all data is invented or openly published.
 - Tests: `npm test`. Benchmark on the labeled test set: `npm run benchmark`.
 - Status for the demo: `docs/STATUS-FOR-MADHU.md`. AI review package: `docs/AI-REVIEW-PACKAGE.md`. Setup: `docs/SETUP.md`. API: `docs/API.md`.
@@ -24,7 +24,7 @@ node server.js          # http://localhost:8765
 - Demo mode works straight away.
 - For real data, open `/login.html` on the same computer to create the first administrator, then go to **Connected Sources**.
 - Copy `.env.example` to `.env` to switch on Claude (`ANTHROPIC_API_KEY`), Gmail (`GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`), semantic search (`EMBEDDINGS_*`) and production encryption (`CREDENTIAL_ENCRYPTION_KEY`).
-- Requires Node.js 22.13 or newer.
+- Requires Node.js 24 or newer (older versions lack the SQLite full-text search the database needs).
 
 ```powershell
 npm test                # 25 integration and unit tests + the original demo smoke tests
@@ -52,7 +52,7 @@ npm test                # 25 integration and unit tests + the original demo smok
 ## Layout
 
 ```
-server.js                 entry point (Node 22.13+ check) → server/index.mjs
+server.js                 entry point (Node 24+ check) → server/index.mjs
 server/                   config, db + migrations, http, auth, security, audit, retention
   ai/                     provider abstraction, Anthropic provider, planner, summarizer
   connectors/             gmail, database, synthetic

@@ -15,7 +15,7 @@ Admin switches in Settings (off by default): Phone Link texts (needs real source
 
 ## 1. Requirements
 
-- Node.js **22.13 or newer** (24 LTS recommended). The server uses Node's built-in SQLite module.
+- Node.js **24 or newer** (24 LTS recommended). The server uses Node's built-in SQLite module.
 - No database server is needed for the app itself: its data lives in `data/records.db`.
 
 ## 2. Install and run
@@ -120,7 +120,7 @@ How it behaves:
 
 | Symptom | Fix |
 | --- | --- |
-| `Node.js … is too old` | Install Node 22.13+ (24 LTS). |
+| `Node.js … is too old` | Install Node 24 LTS or newer. |
 | Setup says "only from this computer" | Open the app via `http://localhost:8765`, or set `SETUP_TOKEN` and enter it, or use `scripts/create-admin.mjs`. |
 | Gmail: `redirect_uri_mismatch` | The URI registered in Google Cloud must equal `PUBLIC_URL/oauth/google/callback` exactly. |
 | Gmail: "Read access … was not granted" | The consent screen's checkbox for Gmail was unticked. Connect again and leave it ticked. |

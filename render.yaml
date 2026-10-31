@@ -10,7 +10,7 @@ services:
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
-        value: 22.13.0
+        value: 24.22.2
       - key: DEMO_ONLY
         value: "true"
 

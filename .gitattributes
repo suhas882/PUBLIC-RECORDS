@@ -1,0 +1,8 @@
+# Store text files with LF in the repository and keep them LF on checkout, so Git stops warning
+# "LF will be replaced by CRLF" on every add. Windows batch files need CRLF to run.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.exe binary
+*.traineddata binary
+*.db binary

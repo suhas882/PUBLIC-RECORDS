@@ -16,12 +16,11 @@ for /f "tokens=1,2 delims=." %%a in ('node -p "process.versions.node"') do (
   set NODE_MAJOR=%%a
   set NODE_MINOR=%%b
 )
-if %NODE_MAJOR% LSS 22 goto oldnode
-if %NODE_MAJOR% EQU 22 if %NODE_MINOR% LSS 13 goto oldnode
+if %NODE_MAJOR% LSS 24 goto oldnode
 goto nodeok
 :oldnode
 echo.
-echo This app needs Node.js 22.13 or newer. You have:
+echo This app needs Node.js 24 or newer. You have:
 node -v
 echo Install "Node.js 24 LTS" from https://nodejs.org , then double-click start.bat again.
 echo.

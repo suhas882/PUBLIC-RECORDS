@@ -79,6 +79,7 @@ export function createApp(config, deps = {}) {
 
   const router = new Router();
   registerAuthRoutes(router, services);
+  registerDemoStateRoutes(router, services);
   registerSourceRoutes(router, services);
   registerSearchRoutes(router, services);
   registerWorkflowRoutes(router, services);

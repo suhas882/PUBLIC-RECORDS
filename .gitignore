@@ -10,3 +10,10 @@ data/
 *.db-wal
 *.db-shm
 start-log.txt
+agent/phonelink-sync.json
+agent/phonelink-sync-state.json
+client_secret*.json
+
+.claude/
+Claude outputs/
+DELETE-THESE-OLD-FILES.txt
